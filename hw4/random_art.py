@@ -18,7 +18,7 @@ def build_random_function(min_depth, max_depth):
     of nesting for the function and the max_depth specifies the maximum amount
     of nesting of the function. 
     
-    returns a random  in a list    
+    returns: a random  in a list    
     """
     n = randint(min_depth, max_depth)       # generating a random number between min and max to determine the depth for each case
     if n == 1:                              # base case when depth is equal to 1
@@ -27,7 +27,7 @@ def build_random_function(min_depth, max_depth):
         else:      
             return ["y"]
     elif n>1:
-        rand = randint(0,4)                 # generate a random integer to choose a function
+        rand = randint(0,6)                 # generate a random integer to choose a function
         if rand == 0:
             return ["sin_pi" , build_random_function(n-1, n-1)]     # recurse by subtract n-1 (depth-1)
         elif rand == 1:
@@ -38,13 +38,18 @@ def build_random_function(min_depth, max_depth):
             return ["avg", build_random_function(n-1, n-1),build_random_function(n-1, n-1)]
         elif rand == 4:
             return ["square", build_random_function(n-1, n-1),build_random_function(n-1, n-1)]
+        elif rand == 5:
+            return ["x(a,b)", build_random_function(n-1, n-1),build_random_function(n-1, n-1)]
+        elif rand == 6:
+            return ["y(a,b)", build_random_function(n-1, n-1),build_random_function(n-1, n-1)]
+            
     
     
 def evaluate_random_function(f, x, y):
     """ Input a random function f, a value of x and y where x and y are values between -1 and 1.
         Evaulates the function with the give values of x and y
     
-        returns a value for the function    
+        returns: a value for the function    
     """
     if f[0] == "x":             # base case checking for x
         return x
@@ -61,7 +66,10 @@ def evaluate_random_function(f, x, y):
             return (evaluate_random_function(f[1],x, y)+evaluate_random_function(f[2],x, y))/2.
         if f[0] == "square":
             return evaluate_random_function(f[1],x, y)**2
-                    
+        if f[0] == "x(a,b)":
+            return evaluate_random_function(f[1],x, y)
+        if f[0] == "y(a,b)":
+            return evaluate_random_function(f[2],x, y)                    
                         
     # your code goes here
 
@@ -70,13 +78,14 @@ def remap_interval(val, input_interval_start, input_interval_end, output_interva
         to the output interval [output_interval_start, output_interval_end].  The mapping
         is an affine one (i.e. output = input*c + b).
     
-        returns the output value in output range 
+        returns: the output value in output range 
     """
     ratio =(val - input_interval_start)/(input_interval_end-input_interval_start)
     return (ratio*(output_interval_end - output_interval_start) + output_interval_start)
 
 im = Image.new("RGB",(350,350))         # creating a new image with the size 350 by 350
-red = build_random_function(2,3)        # create function for each color
+red = build_random_function(5,8)        # create function for each color
+print red
 green = build_random_function(5,6)
 blue = build_random_function(3,4)
 pixels = im.load()                      # load the pixels
